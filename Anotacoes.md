@@ -253,3 +253,22 @@ Mas dessa forma, em um POST, o sistema não reconhece o campo e ele precisa ser 
     def contact_params
       params.require(:contact).permit(:name, :email, :birthdate, :kind_id)
     end
+
+## S1A18 - Entendendo o i18n
+Internacionalização
+Traduções ficam em config/location
+Configurações ficam em initializers separados depois de Rails 4
+
+# rails-i18n
+https://github.com/svenfuchs/rails-i18n
+No Gemfile
+gem 'rails-i18n', '~> 5.0.0'
+I18n.translate('hello')
+ou I18n.t('hello')
+=> Olá, mundo
+Verifica a língua
+I18n.default_locale
+Troca para inglês
+I18n.default_locale = :en
+Ou
+I18n.l
