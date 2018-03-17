@@ -210,3 +210,34 @@ models/contact.rb
 def as_json(options={})
         super(methos: :author, root: true)
 end
+
+## S1A16 - Adicionando novo CRUD
+rails g migration add_kind_to_contact kind:references
+O Rails gera uma migração adicionando a referência de kind para contato, basicamente indicando kind_id como chave estrangeira
+rails g scaffold Kind description:string
+Gera o CRUD
+rails db:migrate
+Manda a migração para o BD
+
+# dev.rake
+    puts "Cadastrando os tipos de contatos..."
+
+    kinds = %w(Amigo Comercial Conhecido)
+
+    kinds.each do |contact|
+      Kind.create!(
+        description: kind
+      )
+    end
+
+    puts "Tipos de contatos cadastrados com sucesso!"
+
+# Atualiza tabela
+rails db:drop db:create db:migrate dev:setup
+
+# contact.rb
+belongs_to :kind
+
+# dev.rake
+Dentro da criação de Contact
+kind: Kind.all.sample
