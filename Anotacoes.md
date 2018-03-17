@@ -241,3 +241,15 @@ belongs_to :kind
 # dev.rake
 Dentro da criação de Contact
 kind: Kind.all.sample
+
+## S1A17 - Render JSON com associações
+
+#belongs_to
+Ele é obrigatório por padrão
+Para alterar:
+belongs_to :kind, optional: true
+Mas dessa forma, em um POST, o sistema não reconhece o campo e ele precisa ser liberado nos parâmetros da controller
+-> contatcs_controller
+    def contact_params
+      params.require(:contact).permit(:name, :email, :birthdate, :kind_id)
+    end
