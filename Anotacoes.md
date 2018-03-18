@@ -428,3 +428,16 @@ Através de um contato eu consigo apagar um telefone?
         ]
     }
 }
+
+## S1A24 - Address com has_one
+
+# No rails console
+rails g model Address street:string city:string contact:references
+
+# Contact Model
+has_one :address
+accepts_nested_attributes_for :address
+
+# Em dev.rake
+    puts "Resetando BD"
+    %x(rails db:drop db:create db:migrate)
