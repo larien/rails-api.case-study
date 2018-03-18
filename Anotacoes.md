@@ -441,3 +441,10 @@ accepts_nested_attributes_for :address
 # Em dev.rake
     puts "Resetando BD"
     %x(rails db:drop db:create db:migrate)
+
+## S1A26 - Rails c com has_one
+O has_one pode ter mais de um dado no campo desejado onde se faz a consulta where, mas ele sempre pega um e sempre é o último.
+
+## S1A27 - CRUD com has_one
+E se eu quiser deixar criar/atualizar apenas um endereço sendo uma relação 1:1?
+accepts_nested_attributes_for :address, update_only: true
