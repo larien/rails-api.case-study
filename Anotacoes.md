@@ -319,3 +319,34 @@ Derruba, cria, migra e executa o scrip que popula as bases
 
 # Pry-Rails
 gem 'pry-rails'
+
+# Criando contato no rails console
+Contact.create(name: "Lauren", email: "lauren.ferremch@gmail.com, birthdate:"10/10/2010", kind_id: 3)
+
+# Colocando em params
+params = {
+    contact: {
+        name: "Lauren",
+        email: "lauren@lauren",
+        birthdate: "10/10/2010",
+        kind_id: 3
+    }
+}
+
+# Criando com params
+Contact.create(params[:contact])
+
+# Atributos aninhados
+params = {
+    contact: {
+        name: "Lauren",
+        email: "lauren@lauren",
+        birthdate: "10/10/2010",
+        kind_id: 3,
+        phones_attributes: [
+            { number: '1234' },
+            { number: '5262' },
+            { number: '0485' }
+        ]
+    }
+}
