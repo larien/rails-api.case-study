@@ -272,3 +272,10 @@ Troca para inglês
 I18n.default_locale = :en
 Ou
 I18n.l
+
+## S1A19 - i18n para data
+    def birthdate_br
+       I18n.l(self.birthdate) unless self.birthdate.blank?
+    end
+
+Traz a tradução em pt-BR e só mostra a original se a br vier vazia
