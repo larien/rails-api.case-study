@@ -350,3 +350,81 @@ params = {
         ]
     }
 }
+
+## S1A24 - CRUD com nested attributes
+
+# CRUD
+Create
+Read (include)
+Update
+Delete
+
+# Enviando JSON :contacts
+{
+    "contacts":
+    {
+        "name": "Lauren Ferreira",
+        "email": "lauren@lauren.com",
+        "birthdate": "31/08/2018",
+        "kind_id": 3,
+        "phones_attributes":[
+            {
+                "number, "1111111111111"
+            },
+            {
+                "number, "2222222222222"
+            }
+        ]
+    }
+}
+
+# Liberando atributo na controller
+    # Only allow a trusted parameter "white list" through.
+    def contact_params
+      params.require(:contact).permit(
+        :name, :email, :birthdate, :kind_id,
+        phones_attributes [:number])
+    end
+
+# PATCH :contacts
+Quando não informamos o id do número, ele cria outro
+{
+    "contacts":
+    {
+        "name": "Lauren Ferreira",
+        "email": "lauren@lauren.com",
+        "birthdate": "31/08/2018",
+        "kind_id": 3,
+        "phones_attributes":[
+            {
+                "id": "185",
+                "number", "1111111111111"
+            },
+            {
+                "id": "192",
+                "number", "2222222222222"
+            }
+        ]
+    }
+}
+
+# Deletando
+Através de um contato eu consigo apagar um telefone?
+{
+    "contacts":
+    {
+        "name": "Lauren Ferreira",
+        "email": "lauren@lauren.com",
+        "birthdate": "31/08/2018",
+        "kind_id": 3,
+        "phones_attributes":[
+            {
+                "id": "185",
+                "_destroy", 1
+            },
+            {
+                "id": "192"
+            }
+        ]
+    }
+}
