@@ -448,3 +448,20 @@ O has_one pode ter mais de um dado no campo desejado onde se faz a consulta wher
 ## S1A27 - CRUD com has_one
 E se eu quiser deixar criar/atualizar apenas um endereço sendo uma relação 1:1?
 accepts_nested_attributes_for :address, update_only: true
+
+## S1A28 - CORS
+Cross Origin Resource Sharing
+Compartilhamento de recursos de origem cruzada
+Quando, por exemplo,  você entra em um site e há uma imagem que não veio carregada do mesmo servidor do site, e sim de um outro (ex. Flickr, ImageShare, etc). Isso é o CORS.
+
+# CORS gem
+https://github.com/cyu/rack-cors
+
+# Testa requisição REST
+resttesttest.com
+
+# Em cors.rb
+Descomentar a partir da linha 8 na application para permitir que a requisição seja testada
+
+# Definição
+O CORS é uma especificação de uma tecnologia de navegadores que define meios para um servidor permitir qeu seus recursos sejam acessados por uma página web de um domínio diferente.
