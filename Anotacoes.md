@@ -273,9 +273,49 @@ I18n.default_locale = :en
 Ou
 I18n.l
 
-## S1A19 - i18n para data
+## S1A20 - i18n para data
     def birthdate_br
        I18n.l(self.birthdate) unless self.birthdate.blank?
     end
 
 Traz a tradução em pt-BR e só mostra a original se a br vier vazia
+
+## S1A21 - Novo model Phones (Associação has_many)
+
+# Criando
+rails g model Phone number:string contact:references
+
+# Na classe
+has_many :phones
+Para indicar uma relação 1:N
+Um contato tem vários telefones, mas um telefone só pertence a um contato
+
+# Em dev.rake
+    puts "Cadastrando os telefones..."
+    Contact.all.each do |contact|
+      Random.rand(5).times do |i|
+        phone = Phone.create!(number:Faker::PhoneNumber.cell_phone)
+        contact.phones << phone
+        contact.save!
+      end
+    end
+    puts "Telefones cadastrados com sucesso!"
+
+Percorre todos os contatos. Gera um número de telefone aleatório cinco vezes criando um phone, recebendo um número fake nele e jogando para os phones do contato e por fim salvando.
+
+rails db:drop db:create db:migrate dev:setup
+Derruba, cria, migra e executa o scrip que popula as bases
+
+## S1A22 - i18n para data (as_json)
+
+# contact.rb
+    def as_json(options={})
+        h = super(options)
+        h[:birthdate] = (I18n.l(self.birthdate) unless self.birthdate.blank?)
+        h
+    end
+
+## S1A23 - Nested attributes com has_many
+
+# Pry-Rails
+gem 'pry-rails'
