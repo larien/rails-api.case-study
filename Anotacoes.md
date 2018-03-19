@@ -465,3 +465,45 @@ Descomentar a partir da linha 8 na application para permitir que a requisição 
 
 # Definição
 O CORS é uma especificação de uma tecnologia de navegadores que define meios para um servidor permitir qeu seus recursos sejam acessados por uma página web de um domínio diferente.
+
+## S2A29 - Active Model Serializers
+
+# JSON API Specification
+Como tratar o JSON quando desenvolvemos API
+https://jsonapi.org
+
+# Gem
+gem 'active_model_serializers', '~> 0.10.0'
+
+# Criando serializador para os models que vamos trabalhar
+rails g serializer contact
+rails g serializer kind
+Que são as models que estamos trabalhando
+Cria em app/serializer, que fica as representações da serialização dos elementos que precisamos
+
+## S2A30 - i18n + json_api Adapter
+Ao invés de retornar o render json que está na tela do controller, ele dá prioridade ao serializador que criamos com a gem serializer
+
+# Data i18n
+No serializer de contact
+  def as_json(*args)
+  h = super(*args)
+  h[:birthdate] = (I18n.l(object.birthdate) unless object.birthdate.blank?)
+  h
+
+# Adaptador do JSON API Specification
+Criar config/initializers/ams.rb
+ActiveModel::Serializer.config.adapter = :json_api
+
+# Data no JSON API
+O JSON API Specification precisa receber a data no padrão da ISO 8601. Logo, não podemos retornar no formato brasileiro como definimos anteriormente. A ideia é que quem receba os dados manipule a data e mostre a data no formato que preferir.
+
+# Implementando data especificada
+Basta usar o .to_time.iso8601 no serializer
+  def as_json(*args)
+    h = super(*args)
+    h[:birthdate] = object.birthdate.to_time.iso8601 unless object.birthdate.blank?
+    h
+  end
+
+  ## S2A31 - Associações com AMS
