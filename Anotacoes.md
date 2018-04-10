@@ -538,7 +538,7 @@ Basta usar o .to_time.iso8601 no serializer
    Hypermedia As The Engine  Of Application State
    Permite que o JSON de resposta venha com um link com as opções disponíveis de ação
 
-   # S2A35 - AMS e links
+   ## S2A35 - AMS e links
    http://jsonapi.org/format/#document-links
    Seguir o padrão:
    "links": {
@@ -568,5 +568,64 @@ Permite você relacionar esses dados do link no bloco relacionado
 Se é kind, ele é agrupado junto ao kind dos relacionamentos
 
 belongs_to :kind do
-    link(:kind) { kind_path(object.kind.id) }
+    link(:related) { kind_path(object.kind.id) }
   has_many :phones
+
+  ## S02A36 Correçõs, ajustes e Foreman gem
+
+  # Limpando o JSON
+  Tirar os links que ficaram no final
+
+  # Foreman Gem
+  https://github.com/ddollar/foreman
+ Manage Procfile-based applications
+ gem 'foreman'
+
+ Automatiza comandos e ações
+ # Automatizando run
+ Criar arquivo "Procfile"
+ web: rails s -b b 0.0.0.0
+
+ Executar comando
+    foreman start
+
+Se der erro com o cd, utilizar sudo gem install foreman para instalar
+
+## S2A37 Media types
+Media Type é uma string que define qual o formato do dado e como ele deve ser lido pela máquina. Isso permite um computador diferenciar entre JSON e XML, por exemplo.
+É um texto que você envia ao servidor indicando qual o tipo de dado você quer como retorno.
+- application/json
+- application/xml
+- multipart/form-data
+- text/html
+Para informar o media type, usamos o header field Accept no momento da requisição.
+
+# Usando cURL
+curl http://localhost:3000/contacts/4 -H "Accept: application/json" -v
+
+MIME Type e MEdia Type são a mesma coisa
+
+# Travando o tipo de resposta apenas quando o header Accept é json
+Em application_controller.rb
+
+before_filter :ensure_json_request
+
+def ensure_json_request
+    return if request.headers["Accept"] =~ /json/
+    render :nothing => true, :status => 406
+end
+
+Antes de fazer qualquer coisa na controller, roda o método ensure_json_request
+O método vai verificar se o header da requisição é /json/. Se sim, deixa a requisição seguir, senão retorna 406 (Not Acceptable).
+
+# Para seguir o padrão de especificação
+Em config/initializers/mime_types.rb
+
+Mime::Type.register "application/vnd.api+json", :json
+Renderiza o tipo json para vnd.api+json para seguir a especificação
+
+# Permite SOMENTE vnd.api+json
+Altera-se na contoller do application
+return if request.headers["Accept"] =~ /vnd\.api\+json/
+
+## S2A38 - Correção no serializer
