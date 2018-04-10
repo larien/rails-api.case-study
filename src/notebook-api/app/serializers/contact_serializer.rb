@@ -3,11 +3,12 @@ class ContactSerializer < ActiveModel::Serializer
 
   # Associations
   belongs_to :kind do
-    link(:kind) { kind_path(object.kind.id) }
+    link(:related) { kind_path(object.kind.id) }
   has_many :phones
   has_one :address
 
-  link(:self) { contact_path(object.id) }
+  # link(:self) { contact_path(object.id) }
+  # link(:related) { kind_path(object.kind.id) }
   
 
   meta do
