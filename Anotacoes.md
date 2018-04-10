@@ -507,3 +507,66 @@ Basta usar o .to_time.iso8601 no serializer
   end
 
   ## S2A31 - Associações com AMS
+  Nos serializadores
+    # Associations
+  belongs_to :kind, optional: true
+  has_many :phones
+  has_one :address
+
+  ## S2A32 - Visualizando campos associados
+# GET /contacts/1
+  def show
+    render json: @contact, include: [:kind]
+  end
+
+   ## S2A33 - Adicionando informações extras no JSON
+
+   # Meta
+     # GET /contacts/1
+  def show
+    render json: @contact, include: [:kind], meta: {author: "Lauren"}
+  end
+
+  # Adicionar para todas as chamadas
+  meta do{
+      author: "Lauren"
+  }
+  end
+
+   ## S2A34 - Links (HATEOAS)
+   Links que vão dentro da resposta (hyperlinks)
+   Hypermedia As The Engine  Of Application State
+   Permite que o JSON de resposta venha com um link com as opções disponíveis de ação
+
+   # S2A35 - AMS e links
+   http://jsonapi.org/format/#document-links
+   Seguir o padrão:
+   "links": {
+       "self": "http://example.com/posts"
+   }
+
+# No contact_serializer
+    link(:self) { contact_path(object.id) }
+    "links":{
+        "self": "/contacts/4"
+    }
+    link(:kind) { kind_path(object.kind.id) }
+    "links":{
+        "self": "/contacts/4",
+        "kind": "/kinds/5"
+    }
+Para usar com url, só usar contact_url ao invés de path
+
+# Antes de usar com URL é necessário, development.rb
+Rails.application.routes.default_url_options = {
+    host: 'localhost',
+    port: 3000
+}
+
+# relationships
+Permite você relacionar esses dados do link no bloco relacionado
+Se é kind, ele é agrupado junto ao kind dos relacionamentos
+
+belongs_to :kind do
+    link(:kind) { kind_path(object.kind.id) }
+  has_many :phones

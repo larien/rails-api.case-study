@@ -2,9 +2,19 @@ class ContactSerializer < ActiveModel::Serializer
   attributes :id, :name, :email, :birthdate
 
   # Associations
-  belongs_to :kind, optional: true
+  belongs_to :kind do
+    link(:kind) { kind_path(object.kind.id) }
   has_many :phones
   has_one :address
+
+  link(:self) { contact_path(object.id) }
+  
+
+  meta do
+    {
+      author: "Lauren"
+    }
+  end
 
   def as_json(*args)
     h = super(*args)
